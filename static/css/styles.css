@@ -1,70 +1,31 @@
-body {
-  -webkit-user-select: none;
-  user-select: none;
-  font-family: "Segoe UI", Arial, sans-serif;
-  line-height: 1.6;
-  background: #fafafa;
-  color: #222;
-  margin: 0;
-  padding: 0;
-}
-
-/* Centered list items */
+body { -webkit-user-select: none; user-select: none; }
 .list-group {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
+  flex-direction: column; /* stack items vertically */
+  align-items: center;    /* center horizontally */
+  justify-content: center;/* center vertically if container has height */
 }
-
-/* Instruction items */
 .list-group-item {
-  border: 1px solid rgba(0,0,0,0.1);
-  width: 60%;
-  text-align: left;
-  background: #fff;
-  margin-bottom: 12px;
-  padding: 15px 18px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  font-size: 1rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  width: 50%;             /* control width of each item */
+  text-align: center;     /* center content inside */
 }
-
-/* Timer styling */
-#timer { 
+ #timer { 
   letter-spacing: 1px; 
-  text-align: center;
+  text-align: center;     /* center timer text */
   display: block;
-  margin: 15px auto;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #d9534f; /* red for urgency */
+  margin: 10px auto;      /* ensures centered alignment */
 }
 
-/* Desktop view */
 @media (min-width: 992px) {
   #examForm button[type=submit] {
     width: 40% !important;
     margin: auto;
   }
-  .list-group-item {
-    width: 50% !important;
-    font-size: 1.05rem;
-  }
 }
 
-/* Mobile view */
 @media (max-width: 768px) {
-  body {
-    font-size: 1.05rem;
-  }
   .list-group-item {
     width: 95% !important;
-    font-size: 1.1rem;       /* bigger text for readability */
-    padding: 18px 20px;      /* more breathing space */
-  }
-  #timer {
-    font-size: 1.3rem;
   }
 }
