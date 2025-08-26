@@ -27,15 +27,7 @@
                 <label class="form-label">Roll No (Password)</label>
                 <input type="password" class="form-control" id = "Password" name="Password" required placeholder="e.g., 22UCS113" />
               </div>
-              <div class="mb-3">
-                <label class="form-label">Department</label>
-                <select class="form-select" name="department" required>
-                  <option value="" selected disabled>Select Department</option>
-                  {% for d in departments %}
-                    <option value="{{ d }}">{{ d }}</option>
-                  {% endfor %}
-                </select>
-              </div>
+              
               <div class="d-grid">
                 <button class="btn btn-primary btn-lg rounded-4" type="submit">Start Assessment</button>
               </div>
