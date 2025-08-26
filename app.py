@@ -7,7 +7,7 @@ import json
 import random   
 
 # ------------- FLASK SETUP -------------
-app = Flask(__name__)
+app = Flask(name)
 app.secret_key = "change-this-secret"  # set via env var in production
 
 # ------------- GOOGLE SHEETS SETUP -------------
@@ -206,31 +206,25 @@ def exam():
     if "user" not in session:
         return redirect(url_for("login"))
 
-    # 🚫 If already submitted, force logout and back to login
-    if _is_submitted(session["user"]):
-        session.clear()
-        return redirect(url_for("login"))
-
     username = session["user"]
     department = session.get("department", "Aptitude")
 
     if request.method == "POST":
-        # Receive answers JSON from hidden field
+        # ✅ Prevent duplicate save
+        if _is_submitted(username):
+            return render_template("thankyou.html", email=username)
+
+        # Receive answers JSON
         answers_json = request.form.get("answers_json") or "{}"
         try:
             answers = json.loads(answers_json)
         except Exception:
             answers = {}
 
-        # Calculate score
         score = calculate_score(answers, department)
-
-        # Snapshot current violation count at submit
-        #vio_count = _get_violation_count(username)
-        # Snapshot current violation count at submit
         vio_count = int(session.get("violations", 0))
 
-        # ✅ Also persist latest violation count to StudentsDB
+        # ✅ Persist latest violation count to StudentsDB
         row, rec = _find_student_row(username)
         if row:
             headers = _headers_to_index_map(student_sheet)
@@ -238,44 +232,50 @@ def exam():
             if vio_col:
                 student_sheet.update_cell(row, vio_col, vio_count)
 
-
-        # Store response row
+        # ✅ Store response row
         response_sheet.append_row([
             username,
-            session.get("roll",""),
-            session.get("name",""),
+            session.get("roll", ""),
+            session.get("name", ""),
             department,
-            session.get("start_time",""),
+            session.get("start_time", ""),
             datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             json.dumps(answers, ensure_ascii=False),
             score,
             vio_count
         ])
-        # Mark Submitted
-        row, rec = _find_student_row(username)
+
+        # ✅ Mark submitted
         if row:
             headers = _headers_to_index_map(student_sheet)
             sub_col = headers.get("Submitted")
             if sub_col:
                 student_sheet.update_cell(row, sub_col, 1)
 
-        # Clear session to prevent re-entry without login
+        # ✅ Show thankyou before clearing session
+        email = username
         session.clear()
+        return render_template("thankyou.html", email=email)
+
+    # GET → show exam if not submitted
+    if _is_submitted(username):
+        # Already submitted → show thankyou, not login
         return render_template("thankyou.html", email=username)
 
-    # GET -> render questions
     try:
         qs = get_questions(department)
     except Exception as e:
         return f"Questions error: {e}"
 
-    return render_template("exam.html",
-                           questions=qs,
-                           duration_min=90,
-                           email=username,
-                           name=session.get("name", ""),
-                           rollno=session.get("roll",""),
-                           department=department)
+    return render_template(
+        "exam.html",
+        questions=qs,
+        duration_min=90,
+        email=username,
+        name=session.get("name", ""),
+        rollno=session.get("roll", ""),
+        department=department
+    )
 
 
 @app.route("/logout")
@@ -381,5 +381,5 @@ def add_header(response):
     return response
 
 # ------------- MAIN -------------
-if __name__ == "__main__":
+if name == "main":
     app.run(debug=True)
