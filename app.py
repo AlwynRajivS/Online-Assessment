@@ -7,7 +7,7 @@ import json
 import random   
 
 # ------------- FLASK SETUP -------------
-app = Flask(_name_)
+app = Flask(__name__)
 app.secret_key = "change-this-secret"  # set via env var in production
 
 # ------------- GOOGLE SHEETS SETUP -------------
@@ -16,7 +16,7 @@ app.secret_key = "change-this-secret"  # set via env var in production
 # 2) one_tab_assesment (sheet1) columns: QID | Department | Question | Option1 | Option2 | Option3 | Option4 | Answer
 # 3) AssessmentQuestions -> worksheet "Responses" columns: Username | RollNo | Department | StartTime | EndTime | AnswersJSON | Score | ViolationsOnSubmit
 
-SVC_FILE = "online-assessment-470109-8dfe625c2026.json"   # your service account file name
+SVC_FILE = "onetabassesment-866b1b45e270.json"   # your service account file name
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
 creds = ServiceAccountCredentials.from_json_keyfile_name(SVC_FILE, SCOPE)
@@ -381,5 +381,5 @@ def add_header(response):
     return response
 
 # ------------- MAIN -------------
-if name == "main":
+if __name__ == "__main__":
     app.run(debug=True)
