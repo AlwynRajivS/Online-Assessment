@@ -7,7 +7,7 @@ import json
 import random   
 
 # ------------- FLASK SETUP -------------
-app = Flask(name)
+app = Flask(_name_)
 app.secret_key = "change-this-secret"  # set via env var in production
 
 # ------------- GOOGLE SHEETS SETUP -------------
