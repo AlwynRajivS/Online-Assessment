@@ -233,20 +233,17 @@ def exam():
                 student_sheet.update_cell(row, vio_col, vio_count)
 
         # ✅ Store response row
-        try:
-            response_sheet.append_row([
-            username,
-            session.get("roll", ""),
-            session.get("name", ""),
-            department,
-            session.get("start_time", ""),
-            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            json.dumps(answers, ensure_ascii=False),
-            score,
-            vio_count
-            ], value_input_option="USER_ENTERED")
-        except Exception as e:
-            print("❌ Error appending row:", e)
+         response_sheet.append_row([
+                user,
+                session.get("roll",""),
+                session.get("name",""),
+                dept,
+                session.get("start_time",""),
+                datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                json.dumps(answers, ensure_ascii=False),
+                score,
+                count
+            ])
 
 
         # ✅ Mark submitted
