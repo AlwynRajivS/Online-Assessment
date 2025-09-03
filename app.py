@@ -234,17 +234,16 @@ def exam():
 
         # ✅ Store response row
         response_sheet.append_row([
-                user,
-                session.get("roll",""),
-                session.get("name",""),
-                dept,
-                session.get("start_time",""),
-                datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                json.dumps(answers, ensure_ascii=False),
-                score,
-                count
-            ])
-
+            username,
+            session.get("roll", ""),
+            session.get("name", ""),
+            department,
+            session.get("start_time", ""),
+            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            json.dumps(answers, ensure_ascii=False),
+            score,
+            vio_count
+        ])
 
         # ✅ Mark submitted
         if row:
