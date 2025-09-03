@@ -233,7 +233,7 @@ def exam():
                 student_sheet.update_cell(row, vio_col, vio_count)
 
         # ✅ Store response row
-         response_sheet.append_row([
+        response_sheet.append_row([
                 user,
                 session.get("roll",""),
                 session.get("name",""),
