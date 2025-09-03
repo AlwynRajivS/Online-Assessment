@@ -233,7 +233,8 @@ def exam():
                 student_sheet.update_cell(row, vio_col, vio_count)
 
         # ✅ Store response row
-        response_sheet.append_row([
+        try:
+            response_sheet.append_row([
             username,
             session.get("roll", ""),
             session.get("name", ""),
@@ -243,7 +244,10 @@ def exam():
             json.dumps(answers, ensure_ascii=False),
             score,
             vio_count
-        ])
+            ], value_input_option="USER_ENTERED")
+        except Exception as e:
+            print("❌ Error appending row:", e)
+
 
         # ✅ Mark submitted
         if row:
